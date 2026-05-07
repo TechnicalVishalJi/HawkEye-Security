@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/melodyyang/sentinal-landing remote -v)",
+      "Bash(git -C /Users/melodyyang/sentinal-landing status)",
+      "Bash(git -C /Users/melodyyang/sentinal-landing branch -a)",
+      "Bash(git remote *)",
+      "Bash(git fetch *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git reset *)",
+      "Bash(git push *)",
+      "Bash(git checkout *)",
+      "Bash(git branch *)",
+      "Bash(git merge *)",
+      "Bash(docker --version)",
+      "Bash(git ls-tree *)",
+      "Bash(git show *)",
+      "Read(//tmp/**)"
+    ]
+  }
+}
