@@ -15,6 +15,7 @@ import { useSentinel } from "@/store/sentinel"
 import { fetchCoverage3D } from "@/lib/api"
 import { SceneShell, CameraReframer, sceneView } from "./SceneShell"
 import type { Coverage3DPayload, CameraCoverage3D } from "@/lib/types"
+import GamepadControls from "./GamepadControls"
 
 // Cameras intentionally hidden from the digital-twin overlay (the mesh shows
 // duplicate FOV/coverage for these in the same hallway as another camera).
@@ -110,6 +111,7 @@ export default function DigitalTwinCoverage() {
           fadeStrength={1.5}
           infiniteGrid
         />
+        <GamepadControls />
         <OrbitControls makeDefault target={view.center} maxPolarAngle={Math.PI / 2.05} />
       </Canvas>
 

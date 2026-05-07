@@ -6,6 +6,7 @@ import * as THREE from "three"
 import { useSentinel } from "@/store/sentinel"
 import { fetchThreatPaths } from "@/lib/api"
 import { SceneShell, CameraReframer, sceneView } from "./SceneShell"
+import GamepadControls from "./GamepadControls"
 import type { ThreatPath, EntryPoint } from "@/lib/types"
 
 const THREAT_COLORS: Record<string, string> = {
@@ -81,6 +82,7 @@ export default function ThreatPathView() {
           fadeStrength={1.5}
           infiniteGrid
         />
+        <GamepadControls />
         <OrbitControls makeDefault target={view.center} maxPolarAngle={Math.PI / 2.05} />
       </Canvas>
 

@@ -18,6 +18,7 @@ import * as THREE from "three"
 import { useSentinel } from "@/store/sentinel"
 import { fetchCoverage3D } from "@/lib/api"
 import { SceneShell, CameraReframer, sceneView } from "./SceneShell"
+import GamepadControls from "./GamepadControls"
 import type { Coverage3DPayload, CameraCoverage3D } from "@/lib/types"
 
 export default function CoverageMap() {
@@ -91,6 +92,7 @@ export default function CoverageMap() {
           fadeStrength={1.5}
           infiniteGrid
         />
+        <GamepadControls />
         <OrbitControls makeDefault target={view.center} maxPolarAngle={Math.PI / 2.05} />
       </Canvas>
 

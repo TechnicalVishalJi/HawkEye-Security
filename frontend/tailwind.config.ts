@@ -5,27 +5,33 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Catppuccin Latte
-        bg:       "#eff1f5",  // base
-        surface:  "#e6e9ef",  // mantle
-        border:   "#ccd0da",  // surface0
-        muted:    "#bcc0cc",  // surface1
-        text:     "#4c4f69",  // text
-        dim:      "#6c6f85",  // subtext0
-        cyan:     "#1e66f5",  // blue
-        green:    "#40a02b",  // green
-        amber:    "#fe640b",  // peach
-        red:      "#d20f39",  // red
-        purple:   "#8839ef",  // mauve
-        pink:     "#ea76cb",  // pink
-        teal:     "#179299",  // teal
-        lavender: "#7287fd",  // lavender
-        yellow:   "#df8e1d",  // yellow
+        // Catppuccin Mocha
+        bg: "#11111b", // crust
+        surface: "#181825", // mantle
+        border: "#313244", // surface0
+        muted: "#45475a", // surface1
+        text: "#eff1f8", // brighter text
+        dim: "#bac2de", // subtext1 (brighter than subtext0)
+        cyan: "#89b4fa", // blue
+        green: "#a6e3a1", // green
+        amber: "#fab387", // peach
+        red: "#f38ba8", // red
+        purple: "#cba6f7", // mauve
+        pink: "#f5c2e7", // pink
+        teal: "#94e2d5", // teal
+        lavender: "#b4befe", // lavender
+        yellow: "#f9e2af", // yellow
       },
       fontFamily: {
-        sans:      ["'Plus Jakarta Sans'", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
-        mono:      ["'Geist Mono'", "ui-monospace", "monospace"],
-        display:   ["'Instrument Serif'", "serif"],
+        sans: [
+          "'Plus Jakarta Sans'",
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "sans-serif",
+        ],
+        mono: ["'Geist Mono'", "ui-monospace", "monospace"],
+        display: ["'Instrument Serif'", "serif"],
         helvetica: ['"Helvetica Neue"', "Helvetica", "Arial", "sans-serif"],
       },
     },

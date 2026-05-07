@@ -4,6 +4,7 @@ import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Grid } from "@react-three/drei"
 import { useSentinel } from "@/store/sentinel"
 import { SceneShell, CameraReframer, sceneView } from "./SceneShell"
+import GamepadControls from "./GamepadControls"
 
 export default function DigitalTwin() {
   const { scene } = useSentinel()
@@ -46,6 +47,7 @@ export default function DigitalTwin() {
         fadeStrength={1.5}
         infiniteGrid
       />
+      <GamepadControls />
       <OrbitControls makeDefault target={view.center} maxPolarAngle={Math.PI / 2.05} />
     </Canvas>
   )

@@ -3,6 +3,7 @@ import { Suspense, useMemo } from "react"
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls } from "@react-three/drei"
 import { useSentinel } from "@/store/sentinel"
+import GamepadControls from "./GamepadControls"
 import FbxModel from "./FbxModel"
 
 export default function PointCloudView() {
@@ -38,6 +39,7 @@ export default function PointCloudView() {
         <Suspense fallback={null}>
           <FbxModel url={feedsFbxUrl} />
         </Suspense>
+        <GamepadControls />
         <OrbitControls makeDefault target={center} />
       </Canvas>
     )
@@ -65,6 +67,7 @@ export default function PointCloudView() {
     >
       <color attach="background" args={["#0a0c0f"]} />
       <PointCloud points={pointCloud.points} />
+      <GamepadControls />
       <OrbitControls makeDefault target={center} />
     </Canvas>
   )
