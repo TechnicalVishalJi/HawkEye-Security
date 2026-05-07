@@ -11,10 +11,10 @@ class Settings(BaseSettings):
     anthropic_api_key: str = ""
     k2_model: str = "claude-opus-4-7"
 
-    # K2 Think V2 (spatial reasoning)
-    k2_think_api_key: str = ""
-    k2_think_base_url: str = "https://api.k2think.ai/v1"
-    k2_think_model: str = "MBZUAI-IFM/K2-Think-v2"
+    # Groq (spatial reasoning)
+    groq_api_key: str = ""
+    groq_base_url: str = "https://api.groq.com/openai/v1"
+    groq_model: str = "llama-3.3-70b-versatile"
 
     backend_host: str = "0.0.0.0"
     backend_port: int = 8000

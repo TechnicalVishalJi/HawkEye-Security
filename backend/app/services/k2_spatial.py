@@ -157,31 +157,37 @@ async def stream_k2_placement(
     Caller accumulates all text for parse_placements; can split for display.
     """
     settings = get_settings()
-    if not settings.k2_think_api_key:
-        yield "[K2_THINK_API_KEY not set — add it to .env]\n"
+    if not settings.groq_api_key:
+        yield "[GROQ_API_KEY not set — add it to .env]\n"
         return
 
     prompt = generate_k2_prompt(spatial_manifest, n_cameras)
 
     payload = {
-        "model":    settings.k2_think_model,
+        "model":    settings.groq_model,
         "stream":   True,
         "messages": [
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user",   "content": prompt},
         ],
+        "temperature": 1,
+        "max_completion_tokens": 1024,
+        "top_p": 1,
+        "stop": None,
     }
 
     headers = {
-        "Authorization": f"Bearer {settings.k2_think_api_key}",
+        "Authorization": f"Bearer {settings.groq_api_key}",
         "Content-Type":  "application/json",
         "Accept":        "text/event-stream",
     }
 
+    seen_placements = False
+
     async with httpx.AsyncClient(timeout=120) as client:
         async with client.stream(
             "POST",
-            f"{settings.k2_think_base_url}/chat/completions",
+            f"{settings.groq_base_url}/chat/completions",
             json=payload,
             headers=headers,
         ) as resp:
@@ -195,12 +201,19 @@ async def stream_k2_placement(
                 try:
                     chunk = json.loads(data)
                     delta = chunk["choices"][0]["delta"]
-                    thinking = delta.get("reasoning_content") or ""
-                    answer   = delta.get("content") or ""
-                    if thinking:
-                        yield ("thinking", thinking)
-                    if answer:
-                        yield ("answer", answer)
+                    
+                    content = delta.get("content") or ""
+                    if not content:
+                        continue
+                        
+                    if "<placements>" in content:
+                        seen_placements = True
+                        
+                    if seen_placements:
+                        yield ("answer", content)
+                    else:
+                        yield ("thinking", content)
+                        
                 except (json.JSONDecodeError, KeyError, IndexError):
                     continue
 

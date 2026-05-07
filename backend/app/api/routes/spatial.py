@@ -88,8 +88,8 @@ async def place_cameras(req: PlaceCamerasRequest):
         raise HTTPException(status_code=400, detail="Provide scene_id or manifest")
 
     settings = get_settings()
-    if not settings.k2_think_api_key:
-        raise HTTPException(status_code=503, detail="K2_THINK_API_KEY not set in .env")
+    if not settings.groq_api_key:
+        raise HTTPException(status_code=503, detail="GROQ_API_KEY not set in .env")
 
     async def event_stream():
         full = ""
