@@ -1,0 +1,989 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  color-scheme: dark;
+  --accent: #89b4fa;
+  --accent-2: #89b4fa;
+  --accent-3: #89b4fa;
+  --bg-elev-0: rgba(255, 255, 255, 0.025);
+  --bg-elev-1: rgba(255, 255, 255, 0.045);
+  --hairline: rgba(255, 255, 255, 0.06);
+}
+
+body {
+  @apply bg-bg text-text;
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-weight: 450;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.012em;
+  font-feature-settings: 'cv11', 'ss01', 'ss03';
+}
+
+.font-display {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  font-feature-settings: 'tnum', 'cv11';
+}
+
+/* Smooth fade-in for cards */
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bento-card {
+  animation: cardIn 380ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+}
+
+.font-mono,
+code,
+pre,
+kbd,
+.terminal-titlebar,
+.term-line {
+  font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+}
+
+/* Indeterminate progress shimmer */
+@keyframes indet {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(400%);
+  }
+}
+
+.progress-indeterminate {
+  animation: indet 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Skeleton shimmer for placeholders */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* CCTV feed label chip */
+.cctv-chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #a6e3a1;
+  border: 1px solid rgba(166, 227, 161, 0.25);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.cctv-rec {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: #f38ba8;
+}
+
+.cctv-rec::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #f38ba8;
+  box-shadow: 0 0 6px rgba(243, 139, 168, 0.8);
+  animation: blink 1.2s step-end infinite;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-surface;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-muted rounded;
+}
+
+/* K2 streaming cursor blink */
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.k2-cursor {
+  animation: blink 1s step-end infinite;
+}
+
+/* ───────── Glass / terminal design system ───────── */
+
+/* Refined glass card system */
+.glass-panel,
+.bento-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.005) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.2),
+    0 8px 32px -12px rgba(0, 0, 0, 0.5);
+  isolation: isolate;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 300ms cubic-bezier(0.2, 0.7, 0.25, 1), box-shadow 300ms ease, border-color 300ms ease;
+}
+
+.bento-card:hover {
+  border-color: rgba(137, 180, 250, 0.22);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.2),
+    0 16px 48px -12px rgba(0, 0, 0, 0.6),
+    0 0 32px -8px rgba(137, 180, 250, 0.18);
+}
+
+.glass-filter {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  background: rgba(20, 20, 32, 0.28);
+  /* much lighter — gradient shows through */
+  pointer-events: none;
+}
+
+.glass-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background:
+    radial-gradient(ellipse 70% 50% at 25% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 100% 100%, rgba(255, 255, 255, 0.025) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.glass-specular {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  pointer-events: none;
+  transition: background 200ms ease;
+}
+
+.glass-content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.glass-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  color: #cfd8ec;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.4);
+  transition: all 0.18s ease;
+}
+
+.glass-btn:hover:not(:disabled) {
+  background: linear-gradient(180deg, rgba(137, 180, 250, 0.16) 0%, rgba(137, 180, 250, 0.04) 100%);
+  border-color: rgba(137, 180, 250, 0.35);
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 0 16px -4px rgba(137, 180, 250, 0.4);
+}
+
+.glass-btn:active:not(:disabled) {
+  transform: translateY(0.5px);
+}
+
+.glass-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.glass-btn--accent {
+  background: linear-gradient(180deg, rgba(137, 180, 250, 0.22) 0%, rgba(137, 180, 250, 0.08) 100%);
+  border-color: rgba(137, 180, 250, 0.4);
+  color: #d8e6ff;
+}
+
+.glass-btn--danger {
+  background: linear-gradient(180deg, rgba(255, 68, 68, 0.16) 0%, rgba(255, 68, 68, 0.04) 100%);
+  border-color: rgba(255, 68, 68, 0.4);
+  color: #ff8080;
+}
+
+/* Terminal-window frame */
+.terminal-frame {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(17, 22, 28, 0.85) 0%, rgba(10, 12, 15, 0.92) 100%);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 12px 40px rgba(0, 0, 0, 0.55);
+}
+
+.terminal-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: linear-gradient(180deg, rgba(40, 48, 58, 0.65) 0%, rgba(26, 32, 40, 0.65) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: #8a9bad;
+  text-transform: lowercase;
+  user-select: none;
+}
+
+.tl-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.4);
+}
+
+.tl-dot--red {
+  background: #ff5f57;
+}
+
+.tl-dot--yellow {
+  background: #febc2e;
+}
+
+.tl-dot--green {
+  background: #28c840;
+}
+
+.term-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.term-time {
+  color: #6a7a9e;
+  flex-shrink: 0;
+}
+
+.term-tag {
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.term-msg {
+  color: #cbd5ee;
+}
+
+.scroll-thin::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+
+/* ───────── Sentinel landing hero (SH-prefixed to avoid dashboard collisions) ───────── */
+
+.sh-hero {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 18vh;
+  gap: 0;
+  z-index: 90;
+  pointer-events: none;
+}
+
+.sh-hero-title {
+  margin: 0;
+  font-family: 'JetBrains Mono', 'Space Mono', 'IBM Plex Mono', ui-monospace, monospace;
+  font-weight: 300;
+  font-size: clamp(48px, 7vw, 104px);
+  letter-spacing: 0.22em;
+  line-height: 1;
+  text-transform: lowercase;
+  color: rgba(255, 255, 255, 0.96);
+  user-select: none;
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+  filter: drop-shadow(0 1px 14px rgba(17, 17, 27, 0.6));
+}
+
+.sh-hero-broken {
+  display: inline-block;
+  filter: url(#sentinel-dissolve);
+}
+
+.sh-hero-letters {
+  display: inline-block;
+}
+
+.sh-hero-char {
+  display: inline-block;
+}
+
+.sh-hero-char.is-hidden {
+  display: none;
+}
+
+.sh-hero-char.is-scrambling {
+  color: rgba(255, 255, 255, 0.62);
+  filter: blur(0.4px);
+}
+
+.sh-hero-cursor {
+  display: inline-block;
+  margin-left: 0.06em;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.92);
+  animation: sh-hero-blink 1.05s steps(1) infinite;
+}
+
+@keyframes sh-hero-blink {
+
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ─── Subtitle: "reasoned surveillance." ─── */
+.sh-hero-subtitle {
+  font-family: 'JetBrains Mono', 'Space Mono', 'IBM Plex Mono', ui-monospace, monospace;
+  font-weight: 400;
+  font-size: clamp(13px, 1.3vw, 18px);
+  letter-spacing: 0.32em;
+  line-height: 1;
+  text-transform: lowercase;
+  color: #ffffff;
+  user-select: none;
+  white-space: nowrap;
+  text-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.95),
+    0 0 18px rgba(0, 0, 0, 0.7);
+  margin-top: -10px;
+}
+
+.sh-hero-subchar {
+  display: inline-block;
+}
+
+.sh-hero-subchar.is-hidden {
+  visibility: hidden;
+}
+
+.sh-hero-subchar.is-scrambling {
+  color: rgba(255, 255, 255, 0.8);
+  filter: blur(0.3px);
+}
+
+.sh-hero-letters>span:nth-child(3),
+.sh-hero-letters>span:nth-child(6) {
+  position: relative;
+}
+
+.sh-hero-letters>span:nth-child(3)::after,
+.sh-hero-letters>span:nth-child(6)::after {
+  content: "n";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  font: inherit;
+  letter-spacing: inherit;
+  color: rgba(255, 255, 255, 0.96);
+  clip-path: inset(46% 0 40% 0);
+  opacity: 0;
+  animation: sh-n-band-shift 3.4s steps(1) infinite;
+}
+
+.sh-hero-letters>span:nth-child(6)::after {
+  animation-delay: 1.7s;
+}
+
+@keyframes sh-n-band-shift {
+
+  0%,
+  11%,
+  16%,
+  71%,
+  76%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+
+  12%,
+  15% {
+    opacity: 1;
+    transform: translateX(0.07em);
+  }
+
+  72%,
+  75% {
+    opacity: 1;
+    transform: translateX(0.06em);
+  }
+}
+
+/* ─── Sentinel hero v2 — bold helvetica + react-bits StaggeredText ─── */
+.sh-hero-title-wrap {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.04em;
+  filter: drop-shadow(0 6px 28px rgba(0, 0, 0, 0.75));
+}
+
+.sh-hero-particle-wrap {
+  width: clamp(420px, 62vw, 980px);
+  height: clamp(120px, 18vh, 220px);
+  pointer-events: auto;
+  filter: drop-shadow(0 6px 28px rgba(0, 0, 0, 0.75));
+  /* Hold off until the ascii bg has a head start, then fade the canvas in.
+     The particles themselves do the big sweep via entryFrom/entryDelay. */
+  animation: sh-particle-rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 1.1s both;
+}
+
+.sh-hero-ascii-wrap {
+  position: relative;
+  width: 100vw;
+  height: clamp(220px, 32vh, 460px);
+  pointer-events: auto;
+  filter: drop-shadow(0 3px 12px rgba(0, 0, 0, 0.7));
+  animation: sh-particle-rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 1.1s both;
+}
+
+/* Override ASCIIText's hardcoded `mix-blend-mode: difference` and the
+   radial-gradient text fill — the demo runs on a solid dark page where
+   `difference` blends to clean colors, but against our ascii bg it
+   produces muddy garbage. We keep the chromatic aberration from the
+   wave shader (canvas) and let the <pre> overlay render solid white. */
+.sh-hero-ascii-wrap .ascii-text-container pre {
+  background-image: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  mix-blend-mode: normal !important;
+  color: #ffffff !important;
+}
+
+.sh-hero-subtitle-glitch {
+  width: clamp(280px, 38vw, 540px);
+  height: clamp(34px, 5.4vh, 64px);
+  pointer-events: auto;
+  animation: sh-particle-rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 2.15s both;
+}
+
+/* Decrypt-scramble subtitle */
+.sh-hero-subtitle-decrypt {
+  pointer-events: auto;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: clamp(14px, 1.45vw, 20px);
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  text-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.95),
+    0 0 18px rgba(0, 0, 0, 0.6);
+  /* Hold until the typed title is mostly done — title takes
+     entryDelay 1100ms + 8 letters * 130ms ≈ 2.15s. */
+  animation: sh-particle-rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 2.15s both;
+}
+
+.sh-hero-subtitle-decrypt-parent {
+  display: inline-block;
+}
+
+.sh-hero-subtitle-decrypt-on {
+  color: #ffffff;
+}
+
+.sh-hero-subtitle-decrypt-off {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.sh-hero-title-rb {
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(56px, 8.4vw, 132px);
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+  text-transform: lowercase;
+  color: #ffffff;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.sh-hero-subtitle-rb {
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: clamp(13px, 1.35vw, 19px);
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: lowercase;
+  color: rgba(255, 255, 255, 0.92);
+  user-select: none;
+  white-space: nowrap;
+  text-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.95),
+    0 0 18px rgba(0, 0, 0, 0.6);
+}
+
+/* Liquid-glass panel — three-layer frost (filter / overlay / specular)
+   in the darwin pattern. Heavy backdrop-blur + an SVG turbulence
+   distortion filter give the wavy refraction; an inset highlight gives
+   the glossy edge. Ambient white box-shadow halo for depth. */
+.sh-glass-panel {
+  pointer-events: auto;
+  position: relative;
+  width: clamp(320px, 34vw, 480px);
+  border-radius: 22px;
+  overflow: hidden;
+  isolation: isolate;
+  --mx: 50%;
+  --my: 50%;
+  --glass-overlay: rgba(0, 0, 0, 0.28);
+  --glass-highlight: rgba(255, 255, 255, 0.18);
+  --glass-pill-bg: rgba(8, 10, 16, 0.55);
+  --glass-pill-border: rgba(255, 255, 255, 0.32);
+  --glass-pill-bg-hover: rgba(14, 17, 26, 0.7);
+  --glass-pill-border-hover: rgba(255, 255, 255, 0.55);
+  background: transparent;
+  /* Quiet static glow at rest; on hover, the same breathing pattern as
+     the pills kicks in. */
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 18px rgba(255, 255, 255, 0.10),
+    0 22px 60px rgba(0, 0, 0, 0.55);
+  transition: box-shadow 0.3s ease;
+  animation: sh-glass-in 0.95s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s both;
+}
+
+.sh-glass-panel:hover {
+  animation:
+    sh-glass-in 0.95s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s both,
+    sh-panel-breath 2.4s ease-in-out infinite;
+}
+
+@keyframes sh-panel-breath {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.14),
+      0 0 22px rgba(255, 255, 255, 0.18),
+      0 0 60px rgba(255, 255, 255, 0.10),
+      0 22px 60px rgba(0, 0, 0, 0.55);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.32),
+      0 0 38px rgba(255, 255, 255, 0.36),
+      0 0 90px rgba(255, 255, 255, 0.20),
+      0 22px 60px rgba(0, 0, 0, 0.55);
+  }
+}
+
+.sh-glass-filter,
+.sh-glass-overlay,
+.sh-glass-specular {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.sh-glass-filter {
+  z-index: 1;
+  backdrop-filter: blur(6px) saturate(140%) brightness(1.1);
+  -webkit-backdrop-filter: blur(6px) saturate(140%) brightness(1.1);
+  filter: url(#sh-glass-distortion);
+}
+
+.sh-glass-overlay {
+  z-index: 2;
+  background: var(--glass-overlay);
+}
+
+.sh-glass-specular {
+  z-index: 3;
+  box-shadow: inset 1px 1px 1px var(--glass-highlight);
+}
+
+.sh-glass-content {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px 22px 18px;
+}
+
+@keyframes sh-glass-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+    filter: blur(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Pill row — two pill-shaped buttons, side by side, mono labels.
+   Same darwin pattern: semi-transparent dark fill + 1px hairline border,
+   subtle hover lift via border + background brightness. Font matches
+   the dashboard mono stack (Tailwind's `font-mono` = Geist Mono). */
+.sh-glass-row {
+  display: flex;
+  gap: 10px;
+}
+
+.sh-glass-pill {
+  position: relative;
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  font-family: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  color: rgba(255, 255, 255, 0.92);
+  background: var(--glass-pill-bg);
+  border: 1px solid var(--glass-pill-border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.12s ease;
+  /* Soft "alive" pulse — outer glow breathes between two intensities so
+     the pill reads as a clickable, living target. ::before holds the inner
+     rim glow, ::after the outer ambient halo; both animate. */
+  isolation: isolate;
+}
+
+/* Hover-only breathing glow. Both pseudo-elements stay invisible until
+   hover, then fade in and animate on offset durations for the "alive" feel. */
+.sh-glass-pill::before,
+.sh-glass-pill::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.sh-glass-pill:hover:not(:disabled) {
+  border-color: var(--glass-pill-border-hover);
+  background: var(--glass-pill-bg-hover);
+  color: #ffffff;
+}
+
+.sh-glass-pill:hover:not(:disabled)::before {
+  opacity: 1;
+  animation: sh-glass-pulse 1.6s ease-in-out infinite;
+}
+
+.sh-glass-pill:hover:not(:disabled)::after {
+  opacity: 1;
+  animation: sh-glass-breath 2.2s ease-in-out infinite;
+}
+
+@keyframes sh-glass-pulse {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.32),
+      0 0 10px rgba(255, 255, 255, 0.22);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.7),
+      0 0 18px rgba(255, 255, 255, 0.45);
+  }
+}
+
+@keyframes sh-glass-breath {
+
+  0%,
+  100% {
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.18);
+  }
+
+  50% {
+    box-shadow: 0 0 38px rgba(255, 255, 255, 0.36);
+  }
+}
+
+.sh-glass-pill:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.sh-glass-pill:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sh-glass-pill-prefix {
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 600;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.sh-glass-pill:hover:not(:disabled) .sh-glass-pill-prefix {
+  color: rgba(255, 255, 255, 0.95);
+  transform: translateX(2px);
+}
+
+.sh-glass-pill-label {
+  font-feature-settings: "ss01", "cv11";
+}
+
+/* Ready state — pill softly filled with mint accent, hairline matching */
+.sh-glass-pill.is-ready {
+  color: rgba(255, 255, 255, 0.96);
+  background: rgba(166, 227, 161, 0.10);
+  border-color: rgba(166, 227, 161, 0.45);
+}
+
+.sh-glass-pill.is-ready .sh-glass-pill-prefix {
+  color: rgba(166, 227, 161, 0.95);
+}
+
+.sh-glass-pill.is-ready:hover:not(:disabled) {
+  background: rgba(166, 227, 161, 0.16);
+  border-color: rgba(166, 227, 161, 0.7);
+}
+
+/* Footer caption — natural sentence with inline links, mono lowercase */
+.sh-glass-foot {
+  margin: 4px 0 0;
+  text-align: center;
+  font-family: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: lowercase;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.sh-glass-foot-link {
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.18s ease, text-decoration-color 0.18s ease;
+}
+
+.sh-glass-foot-link:hover {
+  color: #ffffff;
+  text-decoration-color: #ffffff;
+}
+
+.sh-glass-panel-file {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .sh-glass-panel {
+    width: min(92vw, 560px);
+  }
+
+  .sh-glass-content {
+    padding: 16px 16px 14px;
+  }
+
+  .sh-glass-row {
+    flex-direction: column;
+  }
+}
+
+
+/* ───────── Sentinel landing — ASCII background ───────── */
+
+@keyframes sh-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sh-ascii-rise {
+  0% {
+    opacity: 0;
+    filter: blur(22px) brightness(0.4);
+    transform: scale(1.04);
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0) brightness(1);
+    transform: scale(1);
+  }
+}
+
+@keyframes sh-particle-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sh-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.sh-ascii-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 26;
+  overflow: hidden;
+  background: #000000;
+  pointer-events: auto;
+  animation: sh-ascii-rise 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.sh-ascii-bg>div {
+  width: 100vw !important;
+  height: 100vh !important;
+  display: block !important;
+}
+
+.sh-ascii-bg .video-to-ascii {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
+.sh-ascii-bg .video-to-ascii>div {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+}
+
+.sh-ascii-bg canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  filter: contrast(1.18);
+}
