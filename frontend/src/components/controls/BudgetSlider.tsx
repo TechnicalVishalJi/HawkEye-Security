@@ -3,10 +3,10 @@ import { useCallback, useRef } from "react"
 import { useSentinel } from "@/store/sentinel"
 import { optimizeImportance, recomputeImportance, streamImportanceReasoning } from "@/lib/api"
 
-const MIN = 500
-const MAX = 25000
-// Hardcoded budget → camera count curve. Anchored so the default $2500 lands
-// around 4 cameras and $25k pushes to 12. Slider updates camera count live.
+const MIN = 42000
+const MAX = 2100000
+// Hardcoded budget → camera count curve. Anchored so the default ₹2,10,000 lands
+// around 4 cameras and ₹21,00,000 pushes to 12. Slider updates camera count live.
 const MIN_CAMS = 1
 const MAX_CAMS = 12
 
@@ -77,7 +77,7 @@ export default function BudgetSlider() {
       pushActivity({
         severity: "info",
         title: "Budget adjusted",
-        body: `${start < end ? "↑" : "↓"} $${start.toLocaleString()} → $${end.toLocaleString()} (${delta > 0 ? "+" : ""}$${delta.toLocaleString()}) · ${n} cam${n === 1 ? "" : "s"}`,
+        body: `${start < end ? "↑" : "↓"} ₹${start.toLocaleString("en-IN")} → ₹${end.toLocaleString("en-IN")} (${delta > 0 ? "+" : ""}₹${delta.toLocaleString("en-IN")}) · ${n} cam${n === 1 ? "" : "s"}`,
       })
     }, 450)
   }, [setBudget, budget, setCameras, setCoveragePct, selectCamera, pushActivity])
@@ -85,8 +85,8 @@ export default function BudgetSlider() {
   const handleOptimize = useCallback(async () => {
     if (!sceneId || optimizing) return
     setOptimizing(true)
-    startLoading("optimize", `Optimizing @ $${budget.toLocaleString()}`)
-    pushActivity({ severity: "info", title: "Optimization started", body: `Budget $${budget.toLocaleString()}` })
+    startLoading("optimize", `Optimizing @ ₹${budget.toLocaleString("en-IN")}`)
+    pushActivity({ severity: "info", title: "Optimization started", body: `Budget ₹${budget.toLocaleString("en-IN")}` })
 
     // Fire-and-forget K2 reasoning stream so the left-rail terminal lights up
     // while the optimization runs.
@@ -116,7 +116,7 @@ export default function BudgetSlider() {
       pushActivity({
         severity: "success",
         title: "Optimization complete",
-        body: `${result.cameras.length} cameras · ${(result.score * 100).toFixed(1)}% score · ${result.entry_points_covered}/${result.entry_points_total} entries · $${(result.total_cost_usd ?? 0).toLocaleString()}`,
+        body: `${result.cameras.length} cameras · ${(result.score * 100).toFixed(1)}% score · ${result.entry_points_covered}/${result.entry_points_total} entries · ₹${((result.total_cost_usd ?? 0) * 84).toLocaleString("en-IN")}`,
       })
 
       // Refresh button also re-runs the importance map so visualizations stay in sync.
@@ -172,8 +172,8 @@ export default function BudgetSlider() {
         />
       </div>
 
-      <span className="text-text text-[13px] font-bold shrink-0 w-20 text-right tabular-nums">
-        ${budget.toLocaleString()}
+      <span className="text-text text-[13px] font-bold shrink-0 w-24 text-right tabular-nums">
+        ₹{budget.toLocaleString("en-IN")}
       </span>
       <button
         onClick={handleOptimize}

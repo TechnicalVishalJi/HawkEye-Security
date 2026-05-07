@@ -47,7 +47,7 @@ export default function CameraDetailView() {
           </BentoSection>
 
           <BentoSection title="Spec">
-            <Cell label="Cost" value={`$${cam.cost_usd.toLocaleString()}`} />
+            <Cell label="Cost" value={`₹${cam.cost_usd.toLocaleString("en-IN")}`} />
             <Cell
               label="Status"
               value={cam.status}

@@ -21,8 +21,8 @@ export default function TopBar() {
   const runOptimize = useCallback(async (id: string) => {
     if (optimizing) return
     setOptimizing(true)
-    startLoading("optimize", `Optimizing @ $${budget.toLocaleString()}`)
-    pushActivity({ severity: "info", title: "Auto-optimization started", body: `Budget $${budget.toLocaleString()}` })
+    startLoading("optimize", `Optimizing @ ₹${budget.toLocaleString("en-IN")}`)
+    pushActivity({ severity: "info", title: "Auto-optimization started", body: `Budget ₹${budget.toLocaleString("en-IN")}` })
     try {
       const result = await optimizeImportance(id, budget, 12)
       setCameras(result.cameras)
@@ -38,7 +38,7 @@ export default function TopBar() {
       pushActivity({
         severity: "success",
         title: "Cameras placed",
-        body: `${result.cameras.length} cameras · ${(result.score * 100).toFixed(1)}% score · ${result.entry_points_covered}/${result.entry_points_total} entries · $${(result.total_cost_usd ?? 0).toLocaleString()}`,
+        body: `${result.cameras.length} cameras · ${(result.score * 100).toFixed(1)}% score · ${result.entry_points_covered}/${result.entry_points_total} entries · ₹${((result.total_cost_usd ?? 0) * 84).toLocaleString("en-IN")}`,
       })
     } catch (err) {
       console.error("[auto-optimize] failed", err)

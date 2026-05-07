@@ -33,11 +33,11 @@ from app.services.raycast import (
 
 
 CAMERA_TYPES = [
-    {"type": "Bullet 2K", "cost_usd": 199, "fov_h": 80,  "fov_v": 45, "ir": False, "hdr": False},
-    {"type": "Dome IR",   "cost_usd": 229, "fov_h": 100, "fov_v": 65, "ir": True,  "hdr": False},
-    {"type": "Dome WDR",  "cost_usd": 279, "fov_h": 120, "fov_v": 90, "ir": False, "hdr": True},
-    {"type": "Dome 4K",   "cost_usd": 349, "fov_h": 110, "fov_v": 70, "ir": False, "hdr": True},
-    {"type": "PTZ",       "cost_usd": 599, "fov_h": 65,  "fov_v": 40, "ir": True,  "hdr": True},
+    {"type": "Bullet 2K", "cost_usd": 17000, "fov_h": 80,  "fov_v": 45, "ir": False, "hdr": False},
+    {"type": "Dome IR",   "cost_usd": 19000, "fov_h": 100, "fov_v": 65, "ir": True,  "hdr": False},
+    {"type": "Dome WDR",  "cost_usd": 23000, "fov_h": 120, "fov_v": 90, "ir": False, "hdr": True},
+    {"type": "Dome 4K",   "cost_usd": 29000, "fov_h": 110, "fov_v": 70, "ir": False, "hdr": True},
+    {"type": "PTZ",       "cost_usd": 50000, "fov_h": 65,  "fov_v": 40, "ir": True,  "hdr": True},
 ]
 
 CEILING_HEIGHT = 2.7  # meters — standard mount height

@@ -428,7 +428,7 @@ function FbxFeedsLayout({
           </div>
           <div className="mt-2 flex items-center gap-2 text-xs shrink-0">
             <span className="text-cyan font-semibold">{selected.id}</span>
-            <span className="text-dim">{selected.type} · {selected.fov_h}° FOV · ${selected.cost_usd}</span>
+            <span className="text-dim">{selected.type} · {selected.fov_h}° FOV · ₹{selected.cost_usd.toLocaleString("en-IN")}</span>
             <span className="text-dim">·</span>
             <span className="text-dim font-mono">
               ({selected.position[0].toFixed(1)}, {selected.position[1].toFixed(1)}, {selected.position[2].toFixed(1)})
@@ -549,7 +549,7 @@ function StaticFeedsLayout({
           </div>
           <div className="mt-2 flex items-center gap-2 text-xs shrink-0">
             <span className="text-cyan font-semibold">{selected.id}</span>
-            <span className="text-dim">{selected.type} · {selected.fov_h}° FOV · ${selected.cost_usd}</span>
+            <span className="text-dim">{selected.type} · {selected.fov_h}° FOV · ₹{selected.cost_usd.toLocaleString("en-IN")}</span>
             <span className="text-dim">·</span>
             <span className="text-dim font-mono">
               ({selected.position[0].toFixed(1)}, {selected.position[1].toFixed(1)}, {selected.position[2].toFixed(1)})

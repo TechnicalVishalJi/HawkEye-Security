@@ -69,7 +69,7 @@ export default function CameraNode({ camera, selected }: { camera: Camera; selec
       {selected && (
         <Html distanceFactor={9} position={[0, 0, 0.55]} center occlude>
           <div className="bg-bg/90 border border-cyan/40 rounded px-2 py-1 text-[10px] text-cyan whitespace-nowrap font-mono">
-            {camera.label} · {camera.type} · ${camera.cost_usd}
+            {camera.label} · {camera.type} · ₹{camera.cost_usd.toLocaleString("en-IN")}
           </div>
         </Html>
       )}

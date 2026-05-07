@@ -46,7 +46,7 @@ export default function CameraPOVPanel() {
       <div className="grid grid-cols-3 gap-1.5 text-[10px]">
         <MetaBadge label="Position" value={selectedCam.position.map(v => v.toFixed(1)).join(", ")} />
         <MetaBadge label="FOV H/V"  value={`${selectedCam.fov_h}° / ${selectedCam.fov_v}°`} />
-        <MetaBadge label="Cost"     value={`$${selectedCam.cost_usd}`} />
+        <MetaBadge label="Cost"     value={`₹${selectedCam.cost_usd.toLocaleString("en-IN")}`} />
         {selectedCam.ir_capable  && <CapBadge label="IR Night"   color="purple" />}
         {selectedCam.hdr_capable && <CapBadge label="HDR / WDR"  color="cyan" />}
         {selectedCam.locked      && <CapBadge label="Locked"     color="amber" />}

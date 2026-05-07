@@ -91,13 +91,13 @@ async def stream_importance_reasoning(scene: dict) -> AsyncIterator[str]:
     async with httpx.AsyncClient(timeout=120) as client:
         async with client.stream(
             "POST",
-            f"{settings.k2_think_base_url}/chat/completions",
+            f"{settings.groq_base_url}/chat/completions",
             headers={
-                "Authorization": f"Bearer {settings.k2_think_api_key}",
+                "Authorization": f"Bearer {settings.groq_api_key}",
                 "Content-Type": "application/json",
             },
             json={
-                "model": settings.k2_think_model,
+                "model": settings.groq_model,
                 "messages": [
                     {"role": "system", "content": SYSTEM_PROMPT},
                     {"role": "user", "content": user_prompt},
@@ -247,13 +247,13 @@ async def _call_k2(system_prompt: str, user_prompt: str) -> str:
     settings = get_settings()
     async with httpx.AsyncClient(timeout=180) as client:
         resp = await client.post(
-            f"{settings.k2_think_base_url}/chat/completions",
+            f"{settings.groq_base_url}/chat/completions",
             headers={
-                "Authorization": f"Bearer {settings.k2_think_api_key}",
+                "Authorization": f"Bearer {settings.groq_api_key}",
                 "Content-Type": "application/json",
             },
             json={
-                "model": settings.k2_think_model,
+                "model": settings.groq_model,
                 "messages": [
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt},

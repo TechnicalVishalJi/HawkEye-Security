@@ -2,11 +2,11 @@ import type { Camera, CameraType, CameraStatus } from "@/lib/types"
 import { clearViewCache } from "@/lib/cameraVideoMap"
 
 const TYPE_COST: Record<string, number> = {
-  "Dome 4K": 349,
-  "Dome IR": 229,
-  "Dome WDR": 279,
-  "Bullet 2K": 199,
-  "PTZ": 599,
+  "Dome 4K":  29000,
+  "Dome IR":  19000,
+  "Dome WDR": 23000,
+  "Bullet 2K": 17000,
+  "PTZ":       50000,
 }
 
 /**
@@ -47,7 +47,7 @@ export function k2PlacementsToCamera(k2cameras: {
       target,
       fov_h:        cam.fov_h_deg ?? 90,
       fov_v:        cam.fov_v_deg ?? 60,
-      cost_usd:     TYPE_COST[type] ?? 299,
+      cost_usd:     TYPE_COST[type] ?? 25000,
       ir_capable:   type.includes("IR"),
       hdr_capable:  type.includes("4K") || type.includes("WDR"),
       status:       "active" as CameraStatus,

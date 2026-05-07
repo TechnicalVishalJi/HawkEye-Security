@@ -51,94 +51,121 @@ export default function ImportanceMap() {
       })
   }, [sceneId, importance, setImportance, pushActivity, startLoading, stopLoading])
 
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  // Resize canvas to always match its container
+  useEffect(() => {
+    const container = containerRef.current
+    const canvas = canvasRef.current
+    if (!container || !canvas) return
+    const observer = new ResizeObserver(() => {
+      const { width, height } = container.getBoundingClientRect()
+      if (width > 0 && height > 0) {
+        canvas.width = Math.floor(width)
+        canvas.height = Math.floor(height)
+        canvas.dispatchEvent(new Event("canvas-resize"))
+      }
+    })
+    observer.observe(container)
+    return () => observer.disconnect()
+  }, [])
+
+  // Draw whenever data or canvas size changes
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-    const W = canvas.width
-    const H = canvas.height
-    ctx.clearRect(0, 0, W, H)
-    ctx.fillStyle = "#0a0c0f"
-    ctx.fillRect(0, 0, W, H)
 
-    if (!importance || !scene) return
-    const grid = importance.grid
-    if (!grid || !grid.length || !grid[0]?.length) return
+    const draw = () => {
+      const ctx = canvas.getContext("2d")
+      if (!ctx) return
+      const W = canvas.width
+      const H = canvas.height
+      ctx.clearRect(0, 0, W, H)
+      ctx.fillStyle = "#0a0c0f"
+      ctx.fillRect(0, 0, W, H)
 
-    const [bxMin, byMin] = importance.bounds.min
-    const [bxMax, byMax] = importance.bounds.max
-    const worldW = bxMax - bxMin
-    const worldH = byMax - byMin
-    if (worldW <= 0 || worldH <= 0) return
+      if (!importance || !scene) return
+      const grid = importance.grid
+      if (!grid || !grid.length || !grid[0]?.length) return
 
-    const scale = Math.min(W / worldW, H / worldH) * 0.9
-    const offsetX = (W - worldW * scale) / 2
-    const offsetY = (H - worldH * scale) / 2
-    const toScreenX = (x: number) => offsetX + (x - bxMin) * scale
-    const toScreenY = (y: number) => offsetY + (byMax - y) * scale
+      const [bxMin, byMin] = importance.bounds.min
+      const [bxMax, byMax] = importance.bounds.max
+      const worldW = bxMax - bxMin
+      const worldH = byMax - byMin
+      if (worldW <= 0 || worldH <= 0) return
 
-    const [gridH, gridW] = importance.shape
-    const cellPx = importance.resolution * scale
-    for (let r = 0; r < gridH; r++) {
-      for (let c = 0; c < gridW; c++) {
-        const v = grid[r]?.[c] ?? 0
-        if (v <= 0) continue
-        const sx = offsetX + (c * importance.resolution) * scale
-        const sy = offsetY + (worldH - (r + 1) * importance.resolution) * scale
-        ctx.fillStyle = colorForScore(v)
-        ctx.fillRect(sx, sy, cellPx + 0.5, cellPx + 0.5)
+      const scale = Math.min(W / worldW, H / worldH) * 0.9
+      const offsetX = (W - worldW * scale) / 2
+      const offsetY = (H - worldH * scale) / 2
+      const toScreenX = (x: number) => offsetX + (x - bxMin) * scale
+      const toScreenY = (y: number) => offsetY + (byMax - y) * scale
+
+      const [gridH, gridW] = importance.shape
+      const cellPx = importance.resolution * scale
+      for (let r = 0; r < gridH; r++) {
+        for (let c = 0; c < gridW; c++) {
+          const v = grid[r]?.[c] ?? 0
+          if (v <= 0) continue
+          const sx = offsetX + (c * importance.resolution) * scale
+          const sy = offsetY + (worldH - (r + 1) * importance.resolution) * scale
+          ctx.fillStyle = colorForScore(v)
+          ctx.fillRect(sx, sy, cellPx + 0.5, cellPx + 0.5)
+        }
       }
+
+      ctx.strokeStyle = "rgba(120, 140, 165, 0.85)"
+      ctx.lineWidth = 1.5
+      for (const wall of scene.walls) {
+        ctx.beginPath()
+        ctx.moveTo(toScreenX(wall.from[0]), toScreenY(wall.from[1]))
+        ctx.lineTo(toScreenX(wall.to[0]), toScreenY(wall.to[1]))
+        ctx.stroke()
+      }
+
+      for (const ep of scene.entry_points) {
+        const door = importance.doors.find((d) => d.id === ep.id)
+        const score = door?.score ?? 0.9
+        const sx = toScreenX(ep.position[0])
+        const sy = toScreenY(ep.position[1])
+        ctx.fillStyle = `rgba(137, 180, 250, ${0.5 + score * 0.5})`
+        ctx.beginPath()
+        ctx.arc(sx, sy, 5, 0, Math.PI * 2)
+        ctx.fill()
+        ctx.strokeStyle = "rgba(0,0,0,0.6)"
+        ctx.lineWidth = 1
+        ctx.stroke()
+      }
+
+      ctx.font = "bold 11px 'JetBrains Mono', monospace"
+      ctx.textAlign = "center"
+      for (const room of importance.rooms) {
+        const sceneRoom = scene.rooms.find((r) => r.id === room.id)
+        if (!sceneRoom) continue
+        const cx = (sceneRoom.bounds.min[0] + sceneRoom.bounds.max[0]) / 2
+        const cy = (sceneRoom.bounds.min[1] + sceneRoom.bounds.max[1]) / 2
+        const sx = toScreenX(cx)
+        const sy = toScreenY(cy)
+        ctx.fillStyle = "rgba(10,12,15,0.75)"
+        const label = `${room.inferred_type} · ${room.score.toFixed(2)}`
+        const m = ctx.measureText(label)
+        ctx.fillRect(sx - m.width / 2 - 6, sy - 9, m.width + 12, 16)
+        ctx.fillStyle = "#ffffff"
+        ctx.fillText(label, sx, sy + 3)
+      }
+
+      drawLegend(ctx, W, H)
     }
 
-    ctx.strokeStyle = "rgba(120, 140, 165, 0.85)"
-    ctx.lineWidth = 1.5
-    for (const wall of scene.walls) {
-      ctx.beginPath()
-      ctx.moveTo(toScreenX(wall.from[0]), toScreenY(wall.from[1]))
-      ctx.lineTo(toScreenX(wall.to[0]), toScreenY(wall.to[1]))
-      ctx.stroke()
-    }
-
-    for (const ep of scene.entry_points) {
-      const door = importance.doors.find((d) => d.id === ep.id)
-      const score = door?.score ?? 0.9
-      const sx = toScreenX(ep.position[0])
-      const sy = toScreenY(ep.position[1])
-      ctx.fillStyle = `rgba(137, 180, 250, ${0.5 + score * 0.5})`
-      ctx.beginPath()
-      ctx.arc(sx, sy, 5, 0, Math.PI * 2)
-      ctx.fill()
-      ctx.strokeStyle = "rgba(0,0,0,0.6)"
-      ctx.lineWidth = 1
-      ctx.stroke()
-    }
-
-    ctx.font = "bold 11px 'JetBrains Mono', monospace"
-    ctx.textAlign = "center"
-    for (const room of importance.rooms) {
-      const sceneRoom = scene.rooms.find((r) => r.id === room.id)
-      if (!sceneRoom) continue
-      const cx = (sceneRoom.bounds.min[0] + sceneRoom.bounds.max[0]) / 2
-      const cy = (sceneRoom.bounds.min[1] + sceneRoom.bounds.max[1]) / 2
-      const sx = toScreenX(cx)
-      const sy = toScreenY(cy)
-      ctx.fillStyle = "rgba(10,12,15,0.75)"
-      const label = `${room.inferred_type} · ${room.score.toFixed(2)}`
-      const m = ctx.measureText(label)
-      ctx.fillRect(sx - m.width / 2 - 6, sy - 9, m.width + 12, 16)
-      ctx.fillStyle = "#ffffff"
-      ctx.fillText(label, sx, sy + 3)
-    }
-
-    drawLegend(ctx, W, H)
+    canvas.addEventListener("canvas-resize", draw)
+    draw()
+    return () => canvas.removeEventListener("canvas-resize", draw)
   }, [scene, importance])
 
   const empty = !importance || !importance.grid?.length
 
   return (
-    <div className="w-full h-full flex flex-col bg-transparent">
-      <div className="px-4 py-2 border-b border-white/[0.06] flex items-center justify-between gap-2">
+    <div className="w-full h-full flex flex-col bg-transparent overflow-hidden">
+      <div className="px-4 py-2 border-b border-white/[0.06] flex items-center justify-between gap-2 shrink-0">
         <div className="min-w-0">
           <h3 className="text-sm font-semibold text-text tracking-tight">Importance Map</h3>
           <p className="text-[10px] text-dim truncate">
@@ -154,13 +181,8 @@ export default function ImportanceMap() {
         )}
       </div>
 
-      <div className="flex-1 flex items-center justify-center relative">
-        <canvas
-          ref={canvasRef}
-          width={1000}
-          height={700}
-          className="max-w-full max-h-full"
-        />
+      <div ref={containerRef} className="flex-1 relative min-h-0 overflow-hidden">
+        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
         {empty && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="bg-bg/80 backdrop-blur-md border border-white/[0.06] rounded-lg px-4 py-3 text-center pointer-events-auto max-w-sm">

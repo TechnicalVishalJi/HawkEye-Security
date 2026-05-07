@@ -122,7 +122,7 @@ export const useSentinel = create<SentinelState>((set) => ({
   activeTab: "point-cloud",
   setActiveTab: (activeTab) => set({ activeTab }),
 
-  budget: 2500,
+  budget: 210000,
   setBudget: (budget) => set({ budget }),
   cameras: [],
   // Always grow the pool — never shrink it just because the active list shrank.

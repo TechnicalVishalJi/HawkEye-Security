@@ -7,14 +7,14 @@ const K2_DEMO_LINES = [
   "Threat-weighting entry vectors — front door 0.82 · back 0.74 · windows 0.41 avg",
   "Casting FOV cones at candidate ceiling anchors — 1,284 raw positions",
   "Pruning by occlusion raycast against walls + obstructions → 312 viable",
-  "Sweeping camera-class × position grid under $2,500 budget",
+  "Sweeping camera-class × position grid under ₹2,10,000 budget",
   "Locking CAM-01 (entry priority, Bullet 2K) — Δcoverage +28.4%",
   "Locking CAM-02 (corridor pivot, Dome WDR) — Δcoverage +21.7%, +1 entry",
   "Locking CAM-03 — bias toward NW staircase per insider-class threat model",
   "Adversarial probe: 3 blind spots flagged · 2 mitigable with current budget",
   "Lighting risk pass — glare window 16:00–18:00 on SW corridor",
   "Re-scoring affected anchors with HDR/WDR class — risk neutralized",
-  "Convergence reached — 7 cameras · 100.0% score · $1,613 ($887 under budget)",
+  "Convergence reached — 7 cameras · 100.0% score · ₹1,35,500 (₹74,500 under budget)",
   "Idle — Refresh or budget change retriggers placement reasoning",
 ]
 
