@@ -76,9 +76,9 @@ def print_manifest_summary(manifest: dict) -> None:
 
 async def run_k2(manifest: dict, n_cameras: int) -> list[dict]:
     """Stream K2, print tokens live, return parsed placements."""
-    api_key = os.getenv("K2_THINK_API_KEY", "")
+    api_key = os.getenv("GROQ_API_KEY", "")
     if not api_key:
-        print("\n[!] K2_THINK_API_KEY not set. Skipping K2 placement.\n")
+        print("\n[!] GROQ_API_KEY not set. Skipping K2 placement.\n")
         return []
 
     print("\n" + "─" * 60)

@@ -21,6 +21,16 @@ export default function Nav() {
           <span className="h-1.5 w-1.5 rounded-full bg-green shadow-[0_0_8px_#00ff88]" />
           K2 Think V2 active
         </span>
+        <a
+          href="/sentinel_demo_report.pdf"
+          download="HawkEye_Sentinel_Demo_Report.pdf"
+          className="hidden items-center gap-1.5 rounded-full border border-cyan/40 bg-cyan/[0.06] px-3.5 py-2 text-xs text-cyan transition-all hover:border-cyan hover:bg-cyan/[0.12] hover:shadow-[0_0_0_4px_rgba(0,212,255,0.08)] md:inline-flex"
+        >
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none" className="shrink-0">
+            <path d="M6 1v7M3 6l3 3 3-3M1 10h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          download report
+        </a>
         <Link
           href="/twin"
           className="rounded-full border border-border px-3.5 py-2 text-xs transition-all hover:border-cyan hover:text-cyan hover:shadow-[0_0_0_4px_rgba(0,212,255,0.06)]"

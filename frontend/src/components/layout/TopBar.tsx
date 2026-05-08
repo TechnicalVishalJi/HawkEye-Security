@@ -77,9 +77,20 @@ export default function TopBar() {
         </Link>
       </div>
 
-      {/* Right — alerts only */}
+      {/* Right — download report + alerts */}
       <div className="flex items-center justify-end gap-2">
         {alerts > 0 && <Pill color="amber">{alerts} alert{alerts > 1 ? "s" : ""}</Pill>}
+        <a
+          href="/sentinel_demo_report.pdf"
+          download="HawkEye_Sentinel_Demo_Report.pdf"
+          title="Download demo security assessment report (PDF)"
+          className="flex items-center gap-1.5 rounded-full border border-cyan/30 bg-cyan/[0.05] px-3 py-1.5 text-[11px] text-cyan transition-all hover:border-cyan/60 hover:bg-cyan/[0.10] hover:shadow-[0_0_0_3px_rgba(0,212,255,0.07)]"
+        >
+          <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="shrink-0">
+            <path d="M6 1v7M3 6l3 3 3-3M1 10h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          report
+        </a>
       </div>
     </header>
   )
